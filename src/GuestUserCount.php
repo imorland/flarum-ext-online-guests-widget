@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of ianm/online-guests.
+ *
+ * Copyright (c) IanM.
+ *
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
+ */
+
 namespace IanM\OnlineGuests;
 
 use Afrux\ForumWidgets\SafeCacheRepositoryAdapter;
@@ -62,7 +71,7 @@ class GuestUserCount
             ->in($sessionFilesPath)
             ->files()
             ->ignoreDotFiles(true)
-            ->date('>= now - ' . $this->onlineDurationMinutes . ' minutes');
+            ->date('>= now - '.$this->onlineDurationMinutes.' minutes');
 
         $sessions = [];
         foreach ($recentlyActiveSessionFiles as $file) {
@@ -70,7 +79,7 @@ class GuestUserCount
         }
 
         $guestSessions = array_filter($sessions, function ($session) {
-            return !isset($session['access_token']);
+            return ! isset($session['access_token']);
         });
 
         return count($guestSessions);
