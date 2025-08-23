@@ -1,6 +1,6 @@
 {
-    "name": "ianm/online-guests",
-    "description": "Display the number of guests browsing your forum",
+    "name": "barone/online-guests",
+    "description": "Display the number of guests browsing your forum (With translations)",
     "keywords": [
         "flarum"
     ],
@@ -14,7 +14,12 @@
         {
             "name": "IanM",
             "email": "ian@flarum.org",
-            "role": "Developer"
+            "role": "OG Developer"
+        },
+        {
+            "name": "Cristiano Barone",
+            "email": "cristiano.barone@gmail.com"
+            "role": "Translator"
         }
     ],
     "autoload": {
