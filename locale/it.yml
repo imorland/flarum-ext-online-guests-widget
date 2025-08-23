@@ -1,0 +1,13 @@
+ianm-online-guests:
+  admin:
+    permissions:
+      view_online_guests_label: "Visualizza i visitatori online"
+    settings:
+      online_duration_label: "Tempo Online"
+      cache_duration_label: "Tempo Cache"
+
+  forum:
+    widget:
+      title: Visitatori Online
+      description: Mostra il numero di visitatori senza account
+      guests_online: "{count, plural, one {visitatore online} other {visitatori online}}"
