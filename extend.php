@@ -11,14 +11,12 @@
 
 namespace IanM\OnlineGuests;
 
-use Flarum\Api\Serializer\ForumSerializer;
+use Flarum\Api\Context;
+use Flarum\Api\Resource\ForumResource;
+use Flarum\Api\Schema;
 use Flarum\Extend;
 use Flarum\Foundation\Event\ApplicationBooted;
 use IanM\OnlineGuests\Listener\AddRedisMiddleware;
-use Flarum\Api\Context;
-use Flarum\Api\Endpoint;
-use Flarum\Api\Resource;
-use Flarum\Api\Schema;
 
 return [
     (new Extend\Frontend('forum'))
@@ -31,9 +29,12 @@ return [
 
     new Extend\Locales(__DIR__.'/locale'),
 
-    // @TODO: Replace with the new implementation https://docs.flarum.org/2.x/extend/api#extending-api-resources
-    (new Extend\ApiSerializer(ForumSerializer::class))
-        ->attributes(GuestUserCount::class),
+    (new Extend\ApiResource(ForumResource::class))
+        ->fields(fn () => [
+            Schema\Integer::make('onlineGuests')
+                ->visible(fn ($forum, Context $context) => $context->getActor()->hasPermission('viewOnlineGuests'))
+                ->get(fn ($forum, Context $context) => resolve(GuestUserCount::class)->getCount()),
+        ]),
 
     (new Extend\Settings())
         ->default('ianm-online-guests.online-duration', 5)

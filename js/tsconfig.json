@@ -12,11 +12,8 @@
       "flarum/*": [
         "../vendor/flarum/core/js/dist-typings/*"
       ],
-      "flarum/extensions/fof-forum-widgets-core/*": [
+      "ext:fof/forum-widgets-core/*": [
         "../vendor/fof/forum-widgets-core/js/dist-typings/*"
-      ],
-      "ext:flarum/extensions": [
-        "../vendor/flarum/extensions/js/dist-typings/*"
       ]
     }
   }
