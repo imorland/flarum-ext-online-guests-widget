@@ -4,7 +4,7 @@ import registerWidget from '../common/registerWidget';
 app.initializers.add('ianm/online-guests', () => {
   registerWidget(app);
 
-  app.extensionData
+  app.registry
     .for('ianm-online-guests')
     .registerPermission(
       {
