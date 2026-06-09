@@ -98,7 +98,13 @@ class GuestUserCount
 
         $guestCount = 0;
         foreach ($recentlyActiveSessionFiles as $file) {
-            $session = unserialize(file_get_contents($file->getRealPath()));
+            $contents = @file_get_contents($file->getRealPath());
+
+            if ($contents === false) {
+                continue;
+            }
+
+            $session = @unserialize($contents, ['allowed_classes' => false]);
             if (is_array($session) && ! isset($session['access_token'])) {
                 $guestCount++;
             }

@@ -8,7 +8,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "flarum/core": "^1.8.0",
+        "flarum/core": "^1.8.13",
         "fof/forum-widgets-core": "^1.0.0"
     },
     "support": {
