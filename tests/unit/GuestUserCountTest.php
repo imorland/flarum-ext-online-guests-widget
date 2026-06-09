@@ -11,9 +11,9 @@
 
 namespace IanM\OnlineGuests\Tests\unit;
 
+use Flarum\Settings\SettingsRepositoryInterface;
 use FoF\ForumWidgets\SafeCacheRepositoryAdapter;
 use FoF\Redis\Session\RedisSessionHandler;
-use Flarum\Settings\SettingsRepositoryInterface;
 use IanM\OnlineGuests\GuestUserCount;
 use Illuminate\Cache\RedisStore;
 use Illuminate\Filesystem\Filesystem;
