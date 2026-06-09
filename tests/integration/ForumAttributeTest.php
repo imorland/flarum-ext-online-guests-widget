@@ -14,8 +14,8 @@ namespace IanM\OnlineGuests\Tests\integration;
 use Flarum\Group\Group;
 use Flarum\Testing\integration\RetrievesAuthorizedUsers;
 use Flarum\Testing\integration\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 use Flarum\User\User;
+use PHPUnit\Framework\Attributes\Test;
 
 class ForumAttributeTest extends TestCase
 {

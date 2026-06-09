@@ -19,9 +19,9 @@ use Illuminate\Cache\RedisStore;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Session\FileSessionHandler;
 use Mockery as m;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SessionHandlerInterface;
-use PHPUnit\Framework\Attributes\Test;
 
 class GuestUserCountTest extends TestCase
 {
