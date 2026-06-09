@@ -22,7 +22,9 @@ class TrackGuestSession implements MiddlewareInterface
 {
     public const GUEST_SESSIONS_ZSET_KEY = 'ianm-online-guests';
 
-    public function __construct(protected RedisSessionHandler $sessionHandler) {}
+    public function __construct(protected RedisSessionHandler $sessionHandler)
+    {
+    }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

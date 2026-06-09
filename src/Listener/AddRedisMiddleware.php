@@ -19,7 +19,9 @@ use SessionHandlerInterface;
 
 class AddRedisMiddleware
 {
-    public function __construct(protected Container $container) {}
+    public function __construct(protected Container $container)
+    {
+    }
 
     public function handle(ApplicationBooted $event): void
     {
@@ -30,10 +32,12 @@ class AddRedisMiddleware
 
             $this->container->extend('flarum.forum.middleware', function (array $middleware) {
                 $middleware[] = TrackGuestSession::class;
+
                 return $middleware;
             });
             $this->container->extend('flarum.api.middleware', function (array $middleware) {
                 $middleware[] = TrackGuestSession::class;
+
                 return $middleware;
             });
         }

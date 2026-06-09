@@ -29,7 +29,8 @@ class GuestUserCount
         protected SessionHandlerInterface $sessionHandler,
         protected SafeCacheRepositoryAdapter $cache,
         protected SettingsRepositoryInterface $settings,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ForumSerializer $serializer): array
     {
