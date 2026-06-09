@@ -12,7 +12,7 @@ A [Flarum](http://flarum.org) extension that adds a forum widget showing how man
 
 The widget counts active guest sessions — that is, sessions that are **not** associated with a logged-in user. The count is determined by inspecting Flarum's session storage, so the supported methods depend on your configured session driver (see [Supported session drivers](#supported-session-drivers) below).
 
-To avoid recalculating on every page load, the result is cached for a configurable period (default: 10 minutes). The widget is built on top of [Forum Widgets Core](https://github.com/FriendsOfFlarum/forum-widgets-core), which is installed automatically as a dependency and lets admins position, reorder, and toggle widgets from the dashboard.
+To avoid recalculating on every page load, the result is cached for a configurable period (default: 600 seconds / 10 minutes). The widget is built on top of [Forum Widgets Core](https://github.com/FriendsOfFlarum/forum-widgets-core), which is installed automatically as a dependency and lets admins position, reorder, and toggle widgets from the dashboard.
 
 ## Supported session drivers
 
@@ -64,5 +64,5 @@ php flarum cache:clear
 ## Links
 
 - [Packagist](https://packagist.org/packages/ianm/online-guests)
-- [GitHub](https://github.com/ianm/online-guests)
+- [GitHub](https://github.com/imorland/flarum-ext-online-guests-widget)
 - [Discuss](https://discuss.flarum.org/d/39401)
