@@ -7,8 +7,17 @@
     "type": "flarum-extension",
     "license": "MIT",
     "require": {
-        "flarum/core": "^1.2.0",
-        "afrux/forum-widgets-core": "^0.1.7"
+        "php": "^8.2",
+        "flarum/core": "^1.8.0",
+        "fof/forum-widgets-core": "^1.0.0"
+    },
+    "support": {
+        "forum": "https://discuss.flarum.org/d/39401",
+        "source": "https://github.com/imorland/flarum-ext-online-guests-widget",
+        "issues": "https://github.com/imorland/flarum-ext-online-guests-widget/issues"
+    },
+    "suggest": {
+        "fof/redis": "Required for Redis-based guest session tracking"
     },
     "authors": [
         {
@@ -78,6 +87,7 @@
     },
     "require-dev": {
         "flarum/testing": "^1.0.0",
-        "flarum/phpstan": "*"
+        "flarum/phpstan": "*",
+        "fof/redis": "*"
     }
 }

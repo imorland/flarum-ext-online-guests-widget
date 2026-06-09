@@ -1,4 +1,4 @@
-import Widgets from 'flarum/extensions/afrux-forum-widgets-core/common/extend/Widgets';
+import Widgets from 'flarum/extensions/fof-forum-widgets-core/common/extend/Widgets';
 
 import OnlineGuestsWidget from './components/OnlineGuestsWidget';
 

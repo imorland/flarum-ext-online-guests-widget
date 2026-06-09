@@ -13,6 +13,8 @@ namespace IanM\OnlineGuests;
 
 use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Extend;
+use Flarum\Foundation\Event\ApplicationBooted;
+use IanM\OnlineGuests\Listener\AddRedisMiddleware;
 
 return [
     (new Extend\Frontend('forum'))
@@ -30,5 +32,8 @@ return [
 
     (new Extend\Settings())
         ->default('ianm-online-guests.online-duration', 5)
-        ->default('ianm-online-guests.cache-duration', 60)
+        ->default('ianm-online-guests.cache-duration', 600),
+
+    (new Extend\Event())
+        ->listen(ApplicationBooted::class, AddRedisMiddleware::class),
 ];
