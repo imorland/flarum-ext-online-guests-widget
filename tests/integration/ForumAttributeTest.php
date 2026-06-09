@@ -14,6 +14,8 @@ namespace IanM\OnlineGuests\Tests\integration;
 use Flarum\Group\Group;
 use Flarum\Testing\integration\RetrievesAuthorizedUsers;
 use Flarum\Testing\integration\TestCase;
+use Flarum\User\User;
+use PHPUnit\Framework\Attributes\Test;
 
 class ForumAttributeTest extends TestCase
 {
@@ -26,7 +28,7 @@ class ForumAttributeTest extends TestCase
         $this->extension('fof-forum-widgets-core', 'ianm-online-guests');
 
         $this->prepareDatabase([
-            'users' => [
+            User::class => [
                 $this->normalUser(),
             ],
         ]);
@@ -58,9 +60,7 @@ class ForumAttributeTest extends TestCase
         return $body['data']['attributes'] ?? [];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function guest_without_permission_does_not_receive_the_attribute(): void
     {
         $attributes = $this->forumAttributes();
@@ -68,9 +68,7 @@ class ForumAttributeTest extends TestCase
         $this->assertArrayNotHasKey('onlineGuests', $attributes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function member_without_permission_does_not_receive_the_attribute(): void
     {
         $attributes = $this->forumAttributes(2);
@@ -78,9 +76,7 @@ class ForumAttributeTest extends TestCase
         $this->assertArrayNotHasKey('onlineGuests', $attributes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function member_with_permission_receives_an_integer_count(): void
     {
         $this->grantPermissionTo(Group::MEMBER_ID);
@@ -91,9 +87,7 @@ class ForumAttributeTest extends TestCase
         $this->assertIsInt($attributes['onlineGuests']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function guest_with_permission_receives_an_integer_count(): void
     {
         $this->grantPermissionTo(Group::GUEST_ID);

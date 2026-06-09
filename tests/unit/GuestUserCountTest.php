@@ -19,6 +19,7 @@ use Illuminate\Cache\RedisStore;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Session\FileSessionHandler;
 use Mockery as m;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SessionHandlerInterface;
 
@@ -82,7 +83,7 @@ class GuestUserCountTest extends TestCase
         file_put_contents($this->sessionPath.'/'.$id, serialize($payload));
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_zero_for_unknown_session_handler(): void
     {
         $handler = m::mock(SessionHandlerInterface::class);
@@ -90,7 +91,7 @@ class GuestUserCountTest extends TestCase
         $this->assertSame(0, $this->countFor($handler));
     }
 
-    /** @test */
+    #[Test]
     public function it_counts_recent_guest_sessions_from_files(): void
     {
         $this->writeSession('guest-a', ['_token' => 'x']);
@@ -99,7 +100,7 @@ class GuestUserCountTest extends TestCase
         $this->assertSame(2, $this->countFor($this->fileSessionHandler()));
     }
 
-    /** @test */
+    #[Test]
     public function it_excludes_logged_in_sessions(): void
     {
         $this->writeSession('guest', ['foo' => 'bar']);
@@ -108,7 +109,7 @@ class GuestUserCountTest extends TestCase
         $this->assertSame(1, $this->countFor($this->fileSessionHandler()));
     }
 
-    /** @test */
+    #[Test]
     public function it_ignores_corrupt_session_files(): void
     {
         $this->writeSession('guest', ['foo' => 'bar']);
@@ -118,7 +119,7 @@ class GuestUserCountTest extends TestCase
         $this->assertSame(1, $this->countFor($this->fileSessionHandler()));
     }
 
-    /** @test */
+    #[Test]
     public function it_ignores_sessions_outside_the_online_window(): void
     {
         $this->writeSession('recent', ['foo' => 'bar']);
@@ -130,13 +131,13 @@ class GuestUserCountTest extends TestCase
         $this->assertSame(1, $this->countFor($this->fileSessionHandler(), 5));
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_zero_when_no_sessions_exist(): void
     {
         $this->assertSame(0, $this->countFor($this->fileSessionHandler()));
     }
 
-    /** @test */
+    #[Test]
     public function it_dispatches_to_redis_for_a_redis_session_handler(): void
     {
         $connection = m::mock();
@@ -155,7 +156,7 @@ class GuestUserCountTest extends TestCase
         $this->assertSame(7, $this->countFor($handler));
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_zero_when_redis_throws(): void
     {
         $handler = m::mock(RedisSessionHandler::class);

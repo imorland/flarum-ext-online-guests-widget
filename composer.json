@@ -7,9 +7,8 @@
     "type": "flarum-extension",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "flarum/core": "^1.8.13",
-        "fof/forum-widgets-core": "^1.0.0"
+        "flarum/core": "^2.0.0",
+        "fof/forum-widgets-core": "^2.0.0"
     },
     "support": {
         "forum": "https://discuss.flarum.org/d/39401",
@@ -60,7 +59,7 @@
             }
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "beta",
     "prefer-stable": true,
     "autoload-dev": {
         "psr-4": {
@@ -86,8 +85,8 @@
         "analyse:phpstan": "Run static analysis"
     },
     "require-dev": {
-        "flarum/testing": "^1.0.0",
-        "flarum/phpstan": "*",
+        "flarum/testing": "^2.0.0",
+        "flarum/phpstan": "^2.0.0",
         "fof/redis": "*"
     }
 }

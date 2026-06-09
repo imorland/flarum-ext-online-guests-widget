@@ -11,7 +11,6 @@
 
 namespace IanM\OnlineGuests;
 
-use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Settings\SettingsRepositoryInterface;
 use FoF\ForumWidgets\SafeCacheRepositoryAdapter;
 use FoF\Redis\Session\RedisSessionHandler;
@@ -32,20 +31,14 @@ class GuestUserCount
     ) {
     }
 
-    public function __invoke(ForumSerializer $serializer): array
+    public function getCount(): int
     {
-        if ($serializer->getActor()->hasPermission('viewOnlineGuests')) {
-            $this->onlineDurationMinutes = (int) $this->settings->get('ianm-online-guests.online-duration');
-            $this->cacheDurationSeconds = (int) $this->settings->get('ianm-online-guests.cache-duration');
+        $this->onlineDurationMinutes = (int) $this->settings->get('ianm-online-guests.online-duration');
+        $this->cacheDurationSeconds = (int) $this->settings->get('ianm-online-guests.cache-duration');
 
-            return [
-                'onlineGuests' => $this->cache->remember('ianm-online-guests', $this->cacheDurationSeconds, function () {
-                    return $this->getGuestCount();
-                })
-            ];
-        }
-
-        return [];
+        return $this->cache->remember('ianm-online-guests', $this->cacheDurationSeconds, function () {
+            return $this->getGuestCount();
+        });
     }
 
     protected function getGuestCount(): int
