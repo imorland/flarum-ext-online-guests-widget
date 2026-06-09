@@ -65,4 +65,4 @@ php flarum cache:clear
 
 - [Packagist](https://packagist.org/packages/ianm/online-guests)
 - [GitHub](https://github.com/ianm/online-guests)
-- [Discuss](https://discuss.flarum.org/d/PUT_DISCUSS_SLUG_HERE)
+- [Discuss](https://discuss.flarum.org/d/39401)
