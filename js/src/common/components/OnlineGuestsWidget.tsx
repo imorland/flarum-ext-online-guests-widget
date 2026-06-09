@@ -1,5 +1,5 @@
 import app from 'flarum/common/app';
-import Widget, { WidgetAttrs } from 'flarum/extensions/afrux-forum-widgets-core/common/components/Widget';
+import Widget, { WidgetAttrs } from 'flarum/extensions/fof-forum-widgets-core/common/components/Widget';
 import extractText from 'flarum/common/utils/extractText';
 
 export default class OnlineGuestsWidget<T extends WidgetAttrs> extends Widget<T> {

@@ -11,27 +11,25 @@
 
 namespace IanM\OnlineGuests;
 
-use Afrux\ForumWidgets\SafeCacheRepositoryAdapter;
 use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Settings\SettingsRepositoryInterface;
+use FoF\ForumWidgets\SafeCacheRepositoryAdapter;
+use FoF\Redis\Session\RedisSessionHandler;
+use IanM\OnlineGuests\Middleware\TrackGuestSession;
 use Illuminate\Session\FileSessionHandler;
 use SessionHandlerInterface;
 use Symfony\Component\Finder\Finder;
 
 class GuestUserCount
 {
-    protected $sessionHandler;
-    protected $cache;
-    protected $settings;
-    protected $onlineDurationMinutes = 5;
-    protected $cacheDurationSeconds = 60;
+    protected int $onlineDurationMinutes = 5;
+    protected int $cacheDurationSeconds = 600;
 
-    public function __construct(SessionHandlerInterface $sessionHandler, SafeCacheRepositoryAdapter $cache, SettingsRepositoryInterface $settings)
-    {
-        $this->sessionHandler = $sessionHandler;
-        $this->cache = $cache;
-        $this->settings = $settings;
-    }
+    public function __construct(
+        protected SessionHandlerInterface $sessionHandler,
+        protected SafeCacheRepositoryAdapter $cache,
+        protected SettingsRepositoryInterface $settings,
+    ) {}
 
     public function __invoke(ForumSerializer $serializer): array
     {
@@ -51,37 +49,60 @@ class GuestUserCount
 
     protected function getGuestCount(): int
     {
+        if ($this->sessionHandler instanceof RedisSessionHandler) {
+            return $this->fromRedis();
+        }
+
         if ($this->sessionHandler instanceof FileSessionHandler) {
             return $this->fromFiles();
         }
 
-        // TODO: add Redis, Database, etc support.
-
         return 0;
+    }
+
+    private function fromRedis(): int
+    {
+        try {
+            /** @var \FoF\Redis\Session\RedisSessionHandler $handler */
+            $handler = $this->sessionHandler;
+            /** @var \Illuminate\Cache\RedisStore $store */
+            $store = $handler->getCache()->getStore();
+            $connection = $store->connection();
+            $cutoff = time() - (max(1, $this->onlineDurationMinutes) * 60);
+            $connection->zremrangebyscore(TrackGuestSession::GUEST_SESSIONS_ZSET_KEY, '-inf', (string) $cutoff);
+
+            return (int) $connection->zcard(TrackGuestSession::GUEST_SESSIONS_ZSET_KEY);
+        } catch (\Exception) {
+            return 0;
+        }
     }
 
     private function fromFiles(): int
     {
-        $reflection = new \ReflectionClass($this->sessionHandler);
-        $pathProperty = $reflection->getProperty('path');
-        $pathProperty->setAccessible(true);
-        $sessionFilesPath = $pathProperty->getValue($this->sessionHandler);
+        try {
+            $reflection = new \ReflectionClass($this->sessionHandler);
+            $pathProperty = $reflection->getProperty('path');
+            $sessionFilesPath = $pathProperty->getValue($this->sessionHandler);
+        } catch (\ReflectionException) {
+            return 0;
+        }
+
+        $duration = max(1, $this->onlineDurationMinutes);
 
         $recentlyActiveSessionFiles = Finder::create()
             ->in($sessionFilesPath)
             ->files()
             ->ignoreDotFiles(true)
-            ->date('>= now - '.$this->onlineDurationMinutes.' minutes');
+            ->date('>= now - '.$duration.' minutes');
 
-        $sessions = [];
+        $guestCount = 0;
         foreach ($recentlyActiveSessionFiles as $file) {
-            $sessions[] = unserialize(file_get_contents($file->getRealPath()));
+            $session = unserialize(file_get_contents($file->getRealPath()));
+            if (is_array($session) && ! isset($session['access_token'])) {
+                $guestCount++;
+            }
         }
 
-        $guestSessions = array_filter($sessions, function ($session) {
-            return ! isset($session['access_token']);
-        });
-
-        return count($guestSessions);
+        return $guestCount;
     }
 }
