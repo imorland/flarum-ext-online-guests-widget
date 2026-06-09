@@ -1,5 +1,5 @@
 /// <reference types="mithril" />
-import Widget, { WidgetAttrs } from 'flarum/extensions/fof-forum-widgets-core/common/components/Widget';
+import Widget, { WidgetAttrs } from 'ext:fof/forum-widgets-core/common/components/Widget';
 export default class OnlineGuestsWidget<T extends WidgetAttrs> extends Widget<T> {
     className(): string;
     icon(): string;
