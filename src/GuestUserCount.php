@@ -36,9 +36,11 @@ class GuestUserCount
         $this->onlineDurationMinutes = (int) $this->settings->get('ianm-online-guests.online-duration');
         $this->cacheDurationSeconds = (int) $this->settings->get('ianm-online-guests.cache-duration');
 
+        // The adapter returns null, without running the callback, when it cannot
+        // cache (storage/cache not writable). Count directly instead.
         return $this->cache->remember('ianm-online-guests', $this->cacheDurationSeconds, function () {
             return $this->getGuestCount();
-        });
+        }) ?? $this->getGuestCount();
     }
 
     protected function getGuestCount(): int

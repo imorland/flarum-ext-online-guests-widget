@@ -84,6 +84,24 @@ class GuestUserCountTest extends TestCase
     }
 
     #[Test]
+    public function it_counts_uncached_when_the_cache_is_not_writable(): void
+    {
+        $this->writeSession('guest', ['foo' => 'bar']);
+
+        // The adapter returns null, without running the callback, when
+        // storage/cache isn't writable.
+        $cache = m::mock(SafeCacheRepositoryAdapter::class);
+        $cache->shouldReceive('remember')->andReturn(null);
+
+        $settings = m::mock(SettingsRepositoryInterface::class);
+        $settings->shouldReceive('get')->andReturn('5');
+
+        $count = new GuestUserCount($this->fileSessionHandler(), $cache, $settings);
+
+        $this->assertSame(1, $count->getCount());
+    }
+
+    #[Test]
     public function it_returns_zero_for_unknown_session_handler(): void
     {
         $handler = m::mock(SessionHandlerInterface::class);
